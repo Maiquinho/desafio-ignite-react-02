@@ -87,3 +87,17 @@ export const IconBox = styled.div<IconBoxProps>`
     fill: ${(props) => props.theme.background};
   }
 `
+
+export const CoffeeList = styled.section`
+  & h2 {
+    font-size: 2rem;
+
+    margin-bottom: 3.375rem;
+  }
+`
+
+export const CoffeeGrid = styled.section`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 2rem;
+`

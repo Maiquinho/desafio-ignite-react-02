@@ -1,5 +1,6 @@
 import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react'
 import { Container } from '../../components/Container'
+import { Card } from '../../components/Card'
 import {
   IconBox,
   DeliveryInfo,
@@ -7,9 +8,15 @@ import {
   Intro,
   IntroContent,
   IntroHeading,
+  CoffeeList,
+  CoffeeGrid,
 } from './styles'
 
+import data from '../../../data.json'
+
 export function Home() {
+  const coffees = data.coffees
+
   return (
     <main>
       <Intro>
@@ -58,6 +65,18 @@ export function Home() {
           </IntroContent>
         </Container>
       </Intro>
+
+      <CoffeeList>
+        <Container>
+          <h2>Nossos Cafés</h2>
+
+          <CoffeeGrid>
+            {coffees.map((coffee, i) => (
+              <Card key={i} />
+            ))}
+          </CoffeeGrid>
+        </Container>
+      </CoffeeList>
     </main>
   )
 }
