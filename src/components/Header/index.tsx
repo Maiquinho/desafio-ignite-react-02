@@ -20,7 +20,7 @@ export function Header() {
               </Location>
             </li>
             <li>
-              <NavLink to="/cart">
+              <NavLink to="/checkout">
                 <Cart>
                   <ShoppingCart size={22} weight="fill" />
                 </Cart>
