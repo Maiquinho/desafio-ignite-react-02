@@ -3,7 +3,6 @@ import styled from 'styled-components'
 export const Intro = styled.section`
   position: relative;
   padding: 5.875rem 0 6.75rem;
-  margin-bottom: 2rem;
 
   &::before {
     content: '';
@@ -89,6 +88,8 @@ export const IconBox = styled.div<IconBoxProps>`
 `
 
 export const CoffeeList = styled.section`
+  padding: 2rem 0 9.8125rem;
+
   & h2 {
     font-size: 2rem;
 
