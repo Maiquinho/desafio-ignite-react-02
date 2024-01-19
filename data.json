@@ -1,5 +1,5 @@
 {
-    "catalog": [
+    "coffees": [
         {
             "id": 1,
             "image": "coffees/expresso.png",
