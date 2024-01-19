@@ -12,11 +12,9 @@ import {
   CoffeeGrid,
 } from './styles'
 
-import data from '../../../data.json'
+import { coffees } from '../../../data.json'
 
 export function Home() {
-  const coffees = data.coffees
-
   return (
     <main>
       <Intro>
@@ -71,8 +69,8 @@ export function Home() {
           <h2>Nossos Cafés</h2>
 
           <CoffeeGrid>
-            {coffees.map((coffee, i) => (
-              <Card key={i} />
+            {coffees.map((coffee) => (
+              <Card key={coffee.id} coffee={coffee} />
             ))}
           </CoffeeGrid>
         </Container>
