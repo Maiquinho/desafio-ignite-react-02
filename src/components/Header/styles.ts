@@ -14,6 +14,10 @@ export const Navigation = styled.nav`
 
     & li {
       list-style-type: none;
+
+      & a {
+        display: block;
+      }
     }
   }
 `
