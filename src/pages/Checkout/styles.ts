@@ -305,6 +305,7 @@ export const DeleteButton = styled.button`
 `
 
 export const Separator = styled.hr`
+  border: 0;
   border-top: 1px solid ${(props) => props.theme['base-button']};
 
   margin: 1.5rem 0;
