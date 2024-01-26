@@ -1,10 +1,18 @@
 import { ReactNode, createContext, useEffect, useReducer } from 'react'
 import { Item, cartReducer } from '../reducers/cart/reducer'
-import { addItemToCartAction } from '../reducers/cart/actions'
+import {
+  addItemToCartAction,
+  decreaseCartAmountAction,
+  increaseCartAmountAction,
+  removeItemFromCartAction,
+} from '../reducers/cart/actions'
 
 interface CartContextType {
   cart: Item[]
   addItemToCart: (item: Item) => void
+  decreaseCartAmount: (itemId: Item['id']) => void
+  increaseCartAmount: (itemId: Item['id']) => void
+  removeItemFromCart: (itemId: Item['id']) => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -44,11 +52,26 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispatch(addItemToCartAction(item))
   }
 
+  function decreaseCartAmount(itemId: Item['id']) {
+    dispatch(decreaseCartAmountAction(itemId))
+  }
+
+  function increaseCartAmount(itemId: Item['id']) {
+    dispatch(increaseCartAmountAction(itemId))
+  }
+
+  function removeItemFromCart(itemId: Item['id']) {
+    dispatch(removeItemFromCartAction(itemId))
+  }
+
   return (
     <CartContext.Provider
       value={{
         cart,
         addItemToCart,
+        decreaseCartAmount,
+        increaseCartAmount,
+        removeItemFromCart,
       }}
     >
       {children}
