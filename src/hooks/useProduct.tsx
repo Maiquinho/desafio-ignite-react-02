@@ -28,8 +28,9 @@ export function useProduct<T extends CardProps['coffee']>(coffee: T) {
   function handleAddCart() {
     const id = coffee.id
     const amount = cartAmount
+    const price = coffee.price * amount
 
-    addItemToCart({ id, amount })
+    addItemToCart({ id, amount, price })
     setCartAmount(1)
   }
 
