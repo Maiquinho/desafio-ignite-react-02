@@ -11,8 +11,13 @@ export function useCheckout() {
     return {
       ...coffeeData,
       amount: cartItem.amount,
+      price: cartItem.price,
     }
   })
+
+  const deliveryTax = 3.5
+
+  const totalPrice = itemsOnCart.reduce((acc, coffee) => acc + coffee.price, 0)
 
   const { decreaseCartAmount, increaseCartAmount, removeItemFromCart } =
     useCart()
@@ -30,6 +35,8 @@ export function useCheckout() {
 
   return {
     itemsOnCart,
+    deliveryTax,
+    totalPrice,
     handleDecreaseCartAmount,
     handleIncreaseCartAmount,
     handleRemoveItemFromCart,

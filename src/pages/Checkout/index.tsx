@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
   Bank,
   CreditCard,
@@ -8,6 +10,7 @@ import {
   Plus,
   Trash,
 } from '@phosphor-icons/react'
+
 import { Container } from '../../components/Container'
 import {
   Actions,
@@ -37,10 +40,23 @@ import {
   CheckoutInfo,
   PaymentCheckout,
 } from './styles'
+
 import { useTheme } from 'styled-components'
+import { useCheckout } from '../../hooks/useCheckout'
+
+import { priceFormatter } from '../../utils/formatter'
 
 export function Checkout() {
   const theme = useTheme()
+
+  const {
+    itemsOnCart,
+    totalPrice,
+    deliveryTax,
+    handleDecreaseCartAmount,
+    handleIncreaseCartAmount,
+    handleRemoveItemFromCart,
+  } = useCheckout()
 
   return (
     <main>
@@ -130,83 +146,65 @@ export function Checkout() {
           <CheckoutOrderFieldset>
             <legend>Cafés selecionados</legend>
             <CheckoutFormBox>
-              <CheckoutCard>
-                <CheckoutInfo>
-                  <img src="/coffees/americano.png" alt="" />
-                  <CardDetails>
-                    <span>Expresso Tradicional</span>
-                    <Actions>
-                      <CartChangeAmount>
-                        <button
-                          type="button"
-                          onClick={() => console.log('clicou')}
-                        >
-                          <Minus size={14} weight="bold" />
-                        </button>
-                        <span>1</span>
-                        <button
-                          type="button"
-                          onClick={() => console.log('clicou')}
-                        >
-                          <Plus size={14} weight="bold" />
-                        </button>
-                      </CartChangeAmount>
-                      <DeleteButton type="button">
-                        <Trash size={16} color={theme.purple} />
-                        Remover
-                      </DeleteButton>
-                    </Actions>
-                  </CardDetails>
-                </CheckoutInfo>
+              {itemsOnCart.length > 0 &&
+                itemsOnCart.map((item) => (
+                  <React.Fragment key={item.id}>
+                    <CheckoutCard>
+                      <CheckoutInfo>
+                        <img src={item.image} alt="" />
+                        <CardDetails>
+                          <span>{item.name}</span>
+                          <Actions>
+                            <CartChangeAmount>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleDecreaseCartAmount(item.id!)
+                                }
+                              >
+                                <Minus size={14} weight="bold" />
+                              </button>
+                              <span>{item.amount}</span>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleIncreaseCartAmount(item.id!)
+                                }
+                              >
+                                <Plus size={14} weight="bold" />
+                              </button>
+                            </CartChangeAmount>
+                            <DeleteButton
+                              type="button"
+                              onClick={() => handleRemoveItemFromCart(item.id!)}
+                            >
+                              <Trash size={16} color={theme.purple} />
+                              Remover
+                            </DeleteButton>
+                          </Actions>
+                        </CardDetails>
+                      </CheckoutInfo>
 
-                <strong>R$ 20,00</strong>
-              </CheckoutCard>
-              <Separator />
-              <CheckoutCard>
-                <CheckoutInfo>
-                  <img src="/coffees/americano.png" alt="" />
-                  <CardDetails>
-                    <span>Expresso Tradicional</span>
-                    <Actions>
-                      <CartChangeAmount>
-                        <button
-                          type="button"
-                          onClick={() => console.log('clicou')}
-                        >
-                          <Minus size={14} weight="bold" />
-                        </button>
-                        <span>1</span>
-                        <button
-                          type="button"
-                          onClick={() => console.log('clicou')}
-                        >
-                          <Plus size={14} weight="bold" />
-                        </button>
-                      </CartChangeAmount>
-                      <DeleteButton>
-                        <Trash size={16} color={theme.purple} />
-                        Remover
-                      </DeleteButton>
-                    </Actions>
-                  </CardDetails>
-                </CheckoutInfo>
-
-                <strong>R$ 20,00</strong>
-              </CheckoutCard>
-              <Separator />
+                      <strong>{priceFormatter.format(item.price!)}</strong>
+                    </CheckoutCard>
+                    <Separator />
+                  </React.Fragment>
+                ))}
 
               <PaymentCheckout>
                 <section>
                   <small>Total de itens</small>
-                  <span>R$ 29,70</span>
+                  <span>{priceFormatter.format(totalPrice)}</span>
                 </section>
                 <section>
                   <small>Entrega</small>
-                  <span>R$ 3,50</span>
+                  <span>{priceFormatter.format(deliveryTax)}</span>
                 </section>
                 <section>
                   <strong>Total</strong>
-                  <strong>R$ 33,20</strong>
+                  <strong>
+                    {priceFormatter.format(deliveryTax + totalPrice)}
+                  </strong>
                 </section>
               </PaymentCheckout>
               <CheckoutButton>Confirmar Pedido</CheckoutButton>
