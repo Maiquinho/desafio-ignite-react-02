@@ -110,6 +110,14 @@ export const CartDispatchAmount = styled.div`
 
     cursor: pointer;
 
+    &:focus {
+      box-shadow: none;
+
+      & svg {
+        fill: ${(props) => props.theme['purple-dark']};
+      }
+    }
+
     & svg {
       fill: ${(props) => props.theme.purple};
       transition: all 0.2s ease;
