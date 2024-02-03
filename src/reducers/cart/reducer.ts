@@ -1,3 +1,4 @@
+import { produce } from 'immer'
 import { Action, ActionTypes } from './actions'
 
 export interface Item {
@@ -17,66 +18,77 @@ export function cartReducer(state: CartState, action: Action) {
         (item) => item.id === action.payload.item.id,
       )
 
-      return {
-        ...state,
-        cart:
-          state.cart.length > 0 && isItemAlreadyAdded
-            ? state.cart.map((item) => {
-                return item.id === isItemAlreadyAdded.id
-                  ? {
-                      ...item,
-                      amount: item.amount + action.payload.item.amount,
-                      price: item.price + action.payload.item.price,
-                    }
-                  : item
-              })
-            : [
-                ...state.cart,
-                {
-                  ...action.payload.item,
-                  price: action.payload.item.price,
-                },
-              ],
+      const isItemAlreadyAddedIndex = state.cart.findIndex(
+        (item) => item.id === action.payload.item.id,
+      )
+
+      const itemsOnCart = state.cart.length
+
+      if (isItemAlreadyAddedIndex < 0) {
+        return produce(state, (draft) => {
+          draft.cart.push(action.payload.item)
+        })
       }
+
+      return produce(state, (draft) => {
+        if (itemsOnCart > 0 && isItemAlreadyAdded) {
+          draft.cart[isItemAlreadyAddedIndex].amount +=
+            action.payload.item.amount
+          draft.cart[isItemAlreadyAddedIndex].price += action.payload.item.price
+        }
+      })
+
       break
     }
     case ActionTypes.DECREASE_CART_AMOUNT: {
-      return {
-        ...state,
-        cart: state.cart.map((item) => {
-          return item.id === action.payload.item.id
-            ? {
-                ...item,
-                amount: item.amount > 1 ? item.amount - 1 : item.amount,
-                price: action.payload.item.price,
-              }
-            : item
-        }),
+      const isItemAlreadyAddedIndex = state.cart.findIndex(
+        (item) => item.id === action.payload.item.id,
+      )
+
+      if (isItemAlreadyAddedIndex < 0) {
+        return state
       }
+
+      return produce(state, (draft) => {
+        const currentItem = draft.cart[isItemAlreadyAddedIndex]
+        const currentItemAmount = currentItem.amount
+
+        currentItem.amount =
+          currentItemAmount > 1 ? currentItemAmount - 1 : currentItemAmount
+        currentItem.price = action.payload.item.price
+      })
       break
     }
     case ActionTypes.INCREASE_CART_AMOUNT: {
-      return {
-        ...state,
-        cart: state.cart.map((item) => {
-          return item.id === action.payload.item.id
-            ? {
-                ...item,
-                amount: item.amount + 1,
-                price: action.payload.item.price,
-              }
-            : item
-        }),
+      const isItemAlreadyAddedIndex = state.cart.findIndex(
+        (item) => item.id === action.payload.item.id,
+      )
+
+      if (isItemAlreadyAddedIndex < 0) {
+        return state
       }
+
+      return produce(state, (draft) => {
+        const currentItem = draft.cart[isItemAlreadyAddedIndex]
+        const currentItemAmount = currentItem.amount
+
+        currentItem.amount = currentItemAmount + 1
+        currentItem.price = action.payload.item.price
+      })
       break
     }
     case ActionTypes.REMOVE_ITEM_FROM_CART: {
-      return {
-        ...state,
-        cart: state.cart.filter((item) => {
-          return item.id !== action.payload.itemId
-        }),
+      const isItemAlreadyAddedIndex = state.cart.findIndex(
+        (item) => item.id === action.payload.itemId,
+      )
+
+      if (isItemAlreadyAddedIndex < 0) {
+        return state
       }
+
+      return produce(state, (draft) => {
+        draft.cart.splice(0, isItemAlreadyAddedIndex)
+      })
       break
     }
     default: {
