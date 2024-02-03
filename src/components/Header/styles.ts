@@ -46,9 +46,33 @@ export const Location = styled(ActionButtonBase)`
 `
 
 export const Cart = styled(ActionButtonBase)`
+  position: relative;
+
   background: ${(props) => props.theme['yellow-light']};
 
   & svg {
     fill: ${(props) => props.theme['yellow-dark']};
   }
+`
+
+export const Counter = styled.span`
+  position: absolute;
+
+  top: -0.5rem;
+  right: -0.5rem;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  background: ${(props) => props.theme['yellow-dark']};
+
+  color: ${(props) => props.theme.white};
+  font-size: 0.75rem;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
 `

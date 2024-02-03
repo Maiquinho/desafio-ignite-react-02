@@ -1,9 +1,17 @@
 import { NavLink } from 'react-router-dom'
 import { Container } from '../Container'
-import { Cart, HeaderWrapper, Location, Navigation } from './styles'
+import { Cart, Counter, HeaderWrapper, Location, Navigation } from './styles'
 import { MapPin, ShoppingCart } from '@phosphor-icons/react'
+import { useCart } from '../../hooks/useCart'
 
 export function Header() {
+  const { cart } = useCart()
+
+  const cartAmount = cart.length
+  const cartLinkStyle: React.CSSProperties = {
+    pointerEvents: cartAmount < 1 ? 'none' : 'inherit',
+  }
+
   return (
     <Container>
       <HeaderWrapper>
@@ -20,9 +28,10 @@ export function Header() {
               </Location>
             </li>
             <li>
-              <NavLink to="/checkout">
+              <NavLink to="/checkout" style={cartLinkStyle}>
                 <Cart>
                   <ShoppingCart size={22} weight="fill" />
+                  {cartAmount > 0 && <Counter>{cartAmount}</Counter>}
                 </Cart>
               </NavLink>
             </li>
