@@ -15,10 +15,13 @@ export type Action =
       }
     }
   | {
-      type:
-        | ActionTypes.DECREASE_CART_AMOUNT
-        | ActionTypes.INCREASE_CART_AMOUNT
-        | ActionTypes.REMOVE_ITEM_FROM_CART
+      type: ActionTypes.DECREASE_CART_AMOUNT | ActionTypes.INCREASE_CART_AMOUNT
+      payload: {
+        item: Item
+      }
+    }
+  | {
+      type: ActionTypes.REMOVE_ITEM_FROM_CART
       payload: {
         itemId: Item['id']
       }
@@ -33,20 +36,20 @@ export function addItemToCartAction(item: Item) {
   } satisfies Action
 }
 
-export function decreaseCartAmountAction(itemId: Item['id']) {
+export function decreaseCartAmountAction(item: Item) {
   return {
     type: ActionTypes.DECREASE_CART_AMOUNT,
     payload: {
-      itemId,
+      item,
     },
   } satisfies Action
 }
 
-export function increaseCartAmountAction(itemId: Item['id']) {
+export function increaseCartAmountAction(item: Item) {
   return {
     type: ActionTypes.INCREASE_CART_AMOUNT,
     payload: {
-      itemId,
+      item,
     },
   } satisfies Action
 }
