@@ -10,6 +10,7 @@ export function useCheckout() {
 
     return {
       ...coffeeData,
+      id: cartItem.id,
       amount: cartItem.amount,
       price: cartItem.price,
     }
@@ -19,26 +20,9 @@ export function useCheckout() {
 
   const totalPrice = itemsOnCart.reduce((acc, coffee) => acc + coffee.price, 0)
 
-  const { decreaseCartAmount, increaseCartAmount, removeItemFromCart } =
-    useCart()
-
-  function handleDecreaseCartAmount(id: number) {
-    decreaseCartAmount(id)
-  }
-  function handleIncreaseCartAmount(id: number) {
-    increaseCartAmount(id)
-  }
-
-  function handleRemoveItemFromCart(id: number) {
-    removeItemFromCart(id)
-  }
-
   return {
     itemsOnCart,
     deliveryTax,
     totalPrice,
-    handleDecreaseCartAmount,
-    handleIncreaseCartAmount,
-    handleRemoveItemFromCart,
   }
 }
