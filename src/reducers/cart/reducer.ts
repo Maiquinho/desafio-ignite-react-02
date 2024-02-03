@@ -3,6 +3,7 @@ import { Action, ActionTypes } from './actions'
 export interface Item {
   id: number
   amount: number
+  price: number
 }
 
 export interface CartState {
@@ -19,16 +20,23 @@ export function cartReducer(state: CartState, action: Action) {
       return {
         ...state,
         cart:
-          state.cart.length && isItemAlreadyAdded
+          state.cart.length > 0 && isItemAlreadyAdded
             ? state.cart.map((item) => {
                 return item.id === isItemAlreadyAdded.id
                   ? {
                       ...item,
                       amount: item.amount + action.payload.item.amount,
+                      price: item.price + action.payload.item.price,
                     }
                   : item
               })
-            : [...state.cart, action.payload.item],
+            : [
+                ...state.cart,
+                {
+                  ...action.payload.item,
+                  price: action.payload.item.price,
+                },
+              ],
       }
       break
     }
@@ -36,10 +44,11 @@ export function cartReducer(state: CartState, action: Action) {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          return item.id === action.payload.itemId
+          return item.id === action.payload.item.id
             ? {
                 ...item,
                 amount: item.amount > 1 ? item.amount - 1 : item.amount,
+                price: action.payload.item.price,
               }
             : item
         }),
@@ -50,10 +59,11 @@ export function cartReducer(state: CartState, action: Action) {
       return {
         ...state,
         cart: state.cart.map((item) => {
-          return item.id === action.payload.itemId
+          return item.id === action.payload.item.id
             ? {
                 ...item,
                 amount: item.amount + 1,
+                price: action.payload.item.price,
               }
             : item
         }),
