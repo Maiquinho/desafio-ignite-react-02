@@ -17,6 +17,7 @@ export const Navigation = styled.nav`
 
       & a {
         display: block;
+        border-radius: 6px;
       }
     }
   }
