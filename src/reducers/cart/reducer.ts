@@ -78,16 +78,10 @@ export function cartReducer(state: CartState, action: Action) {
       break
     }
     case ActionTypes.REMOVE_ITEM_FROM_CART: {
-      const isItemAlreadyAddedIndex = state.cart.findIndex(
-        (item) => item.id === action.payload.itemId,
-      )
-
-      if (isItemAlreadyAddedIndex < 0) {
-        return state
-      }
-
       return produce(state, (draft) => {
-        draft.cart.splice(0, isItemAlreadyAddedIndex)
+        draft.cart = draft.cart.filter((item) => {
+          return item.id !== action.payload.itemId
+        })
       })
       break
     }
