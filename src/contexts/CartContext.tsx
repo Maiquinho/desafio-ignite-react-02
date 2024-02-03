@@ -10,8 +10,8 @@ import {
 interface CartContextType {
   cart: Item[]
   addItemToCart: (item: Item) => void
-  decreaseCartAmount: (itemId: Item['id']) => void
-  increaseCartAmount: (itemId: Item['id']) => void
+  decreaseCartAmount: (item: Item) => void
+  increaseCartAmount: (item: Item) => void
   removeItemFromCart: (itemId: Item['id']) => void
 }
 
@@ -52,12 +52,12 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispatch(addItemToCartAction(item))
   }
 
-  function decreaseCartAmount(itemId: Item['id']) {
-    dispatch(decreaseCartAmountAction(itemId))
+  function decreaseCartAmount(item: Item) {
+    dispatch(decreaseCartAmountAction(item))
   }
 
-  function increaseCartAmount(itemId: Item['id']) {
-    dispatch(increaseCartAmountAction(itemId))
+  function increaseCartAmount(item: Item) {
+    dispatch(increaseCartAmountAction(item))
   }
 
   function removeItemFromCart(itemId: Item['id']) {
