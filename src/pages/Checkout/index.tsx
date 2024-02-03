@@ -1,28 +1,19 @@
-import React from 'react'
-
 import {
   Bank,
   CreditCard,
   CurrencyDollar,
   MapPin,
-  Minus,
   Money,
-  Plus,
-  Trash,
 } from '@phosphor-icons/react'
 
 import { Container } from '../../components/Container'
 import {
-  Actions,
   AddressFormBox,
   CheckoutButton,
-  CheckoutCard,
   CheckoutFormBox,
   CheckoutOrderFieldset,
   CityField,
   ComplementField,
-  DeleteButton,
-  CardDetails,
   DistrictField,
   FieldsWrapper,
   FillOrderFildset,
@@ -32,12 +23,9 @@ import {
   PaymentButton,
   PaymentFormBox,
   PaymentOptions,
-  Separator,
   StateField,
   StreetField,
   ZipCodeField,
-  CartChangeAmount,
-  CheckoutInfo,
   PaymentCheckout,
 } from './styles'
 
@@ -45,18 +33,12 @@ import { useTheme } from 'styled-components'
 import { useCheckout } from '../../hooks/useCheckout'
 
 import { priceFormatter } from '../../utils/formatter'
+import { CheckoutCard } from './components/CheckoutCard'
 
 export function Checkout() {
   const theme = useTheme()
 
-  const {
-    itemsOnCart,
-    totalPrice,
-    deliveryTax,
-    handleDecreaseCartAmount,
-    handleIncreaseCartAmount,
-    handleRemoveItemFromCart,
-  } = useCheckout()
+  const { itemsOnCart, totalPrice, deliveryTax } = useCheckout()
 
   return (
     <main>
@@ -147,50 +129,22 @@ export function Checkout() {
             <legend>Cafés selecionados</legend>
             <CheckoutFormBox>
               {itemsOnCart.length > 0 &&
-                itemsOnCart.map((item) => (
-                  <React.Fragment key={item.id}>
-                    <CheckoutCard>
-                      <CheckoutInfo>
-                        <img src={item.image} alt="" />
-                        <CardDetails>
-                          <span>{item.name}</span>
-                          <Actions>
-                            <CartChangeAmount>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleDecreaseCartAmount(item.id!)
-                                }
-                              >
-                                <Minus size={14} weight="bold" />
-                              </button>
-                              <span>{item.amount}</span>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleIncreaseCartAmount(item.id!)
-                                }
-                              >
-                                <Plus size={14} weight="bold" />
-                              </button>
-                            </CartChangeAmount>
-                            <DeleteButton
-                              type="button"
-                              onClick={() => handleRemoveItemFromCart(item.id!)}
-                            >
-                              <Trash size={16} color={theme.purple} />
-                              Remover
-                            </DeleteButton>
-                          </Actions>
-                        </CardDetails>
-                      </CheckoutInfo>
-
-                      <strong>{priceFormatter.format(item.price!)}</strong>
-                    </CheckoutCard>
-                    <Separator />
-                  </React.Fragment>
-                ))}
-
+                itemsOnCart.map(
+                  ({ id, amount, price, description, image, name, tags }) => (
+                    <CheckoutCard
+                      key={id}
+                      coffee={{
+                        id,
+                        amount,
+                        price,
+                        description: description!,
+                        image: image!,
+                        name: name!,
+                        tags: tags!,
+                      }}
+                    />
+                  ),
+                )}
               <PaymentCheckout>
                 <section>
                   <small>Total de itens</small>
