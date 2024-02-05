@@ -87,7 +87,11 @@ export const FieldsWrapper = styled.div`
   row-gap: 1rem;
 `
 
-export const InputFieldBase = styled.input`
+interface InputFieldBaseProps {
+  $isInvalid: number
+}
+
+export const InputFieldBase = styled.input<InputFieldBaseProps>`
   background: ${(props) => props.theme['base-input']};
 
   padding: 0.75rem;
@@ -95,11 +99,15 @@ export const InputFieldBase = styled.input`
   color: ${(props) => props.theme['base-text']};
   font-size: 0.875rem;
 
-  border: 1px solid ${(props) => props.theme['base-button']};
+  border: 1px solid
+    ${(props) =>
+      props.$isInvalid ? props.theme['red-300'] : props.theme['base-button']};
   border-radius: 4px;
 
   &:focus {
-    box-shadow: 0 0 0 1px ${(props) => props.theme['yellow-dark']};
+    box-shadow: 0 0 0 1px
+      ${(props) =>
+        props.$isInvalid ? props.theme['red-300'] : props.theme['yellow-dark']};
   }
 
   &::placeholder {
@@ -115,21 +123,44 @@ export const InputFieldBase = styled.input`
   }
 `
 
-export const ZipCodeField = styled(InputFieldBase)`
+export const InputFieldWrapperBase = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
+export const ErrorMessageField = styled.small`
+  color: ${(props) => props.theme['red-300']};
+`
+
+export const ZipCodeFieldWrapper = styled(InputFieldWrapperBase)`
   grid-area: zipcode;
 `
-export const StreetField = styled(InputFieldBase)`
+export const ZipCodeField = styled(InputFieldBase)``
+
+export const StreetFieldWrapper = styled(InputFieldWrapperBase)`
   grid-area: street;
 `
-export const NumberField = styled(InputFieldBase)`
+export const StreetField = styled(InputFieldBase)``
+
+export const NumberFieldWrapper = styled(InputFieldWrapperBase)`
   grid-area: number;
 `
+export const NumberField = styled(InputFieldBase)``
 
-export const ComplementField = styled.div`
+export const ComplementFieldWrapper = styled.div`
   grid-area: complement;
+`
 
+interface ComplementFieldProps {
+  $isInvalid: number
+}
+
+export const ComplementField = styled.div<ComplementFieldProps>`
   background: ${(props) => props.theme['base-input']};
-  border: 1px solid ${(props) => props.theme['base-button']};
+  border: 1px solid
+    ${(props) =>
+      props.$isInvalid ? props.theme['red-300'] : props.theme['base-button']};
   border-radius: 4px;
 
   padding: 0.75rem;
@@ -139,7 +170,9 @@ export const ComplementField = styled.div`
   justify-content: space-between;
 
   &:focus-within {
-    box-shadow: 0 0 0 1px ${(props) => props.theme['yellow-dark']};
+    box-shadow: 0 0 0 1px
+      ${(props) =>
+        props.$isInvalid ? props.theme['red-300'] : props.theme['yellow-dark']};
 
     & label {
       display: none;
@@ -158,6 +191,15 @@ export const ComplementField = styled.div`
       color: ${(props) => props.theme['base-label']};
     }
 
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-text-fill-color: ${(props) => props.theme['base-text']};
+      -webkit-box-shadow: 0 0 0 30px ${(props) => props.theme['base-input']}
+        inset !important;
+    }
+
     &:focus {
       box-shadow: none;
     }
@@ -170,17 +212,26 @@ export const ComplementField = styled.div`
   }
 `
 
-export const DistrictField = styled(InputFieldBase)`
+export const DistrictFieldWrapper = styled(InputFieldWrapperBase)`
   grid-area: district;
 `
-export const CityField = styled(InputFieldBase)`
+export const DistrictField = styled(InputFieldBase)``
+export const CityFieldWrapper = styled(InputFieldWrapperBase)`
   grid-area: city;
 `
-export const StateField = styled(InputFieldBase)`
+export const CityField = styled(InputFieldBase)``
+export const StateFieldWrapper = styled(InputFieldWrapperBase)`
   grid-area: state;
 `
+export const StateField = styled(InputFieldBase)``
 
 export const PaymentOptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
+export const PaymentOptionButtons = styled.div`
   display: flex;
   gap: 0.75rem;
 `
