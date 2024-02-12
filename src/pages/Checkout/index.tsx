@@ -64,9 +64,9 @@ const formSchema = z.object({
     .string()
     .min(2, { message: 'Digite o estado no formato UF.' })
     .max(2, { message: 'Digite o estado no formato UF.' }),
-  paymentMethod: z
-    .string()
-    .min(1, { message: 'Selecione uma opção de pagamento.' }),
+  paymentMethod: z.string({
+    invalid_type_error: 'Selecione uma opção de pagamento.',
+  }),
 })
 
 type FormType = z.infer<typeof formSchema>
@@ -253,9 +253,9 @@ export function Checkout() {
                     </label>
                   </PaymentButton>
                 </PaymentOptionButtons>
-                {errors.paymentMethod?.type === 'invalid_type' && (
+                {errors.paymentMethod?.message && (
                   <ErrorMessageField>
-                    Selecione um método de pagamento
+                    {errors.paymentMethod?.message}
                   </ErrorMessageField>
                 )}
               </PaymentOptions>
