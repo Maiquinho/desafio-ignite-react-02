@@ -1,5 +1,6 @@
 import { produce } from 'immer'
 import { Action, ActionTypes } from './actions'
+import { OrderForm } from '../../pages/Checkout'
 
 export interface Item {
   id: number
@@ -7,8 +8,14 @@ export interface Item {
   price: number
 }
 
+export interface Order extends OrderForm {
+  id: number
+  items: Item[]
+}
+
 export interface CartState {
   cart: Item[]
+  orders: Order[]
 }
 
 export function cartReducer(state: CartState, action: Action) {
@@ -82,6 +89,21 @@ export function cartReducer(state: CartState, action: Action) {
         draft.cart = draft.cart.filter((item) => {
           return item.id !== action.payload.itemId
         })
+      })
+      break
+    }
+    case ActionTypes.CHECKOUT: {
+      return produce(state, (draft) => {
+        const newOrder = {
+          id: new Date().getTime(),
+          items: state.cart,
+          ...action.payload.order,
+        }
+
+        draft.orders.push(newOrder)
+        draft.cart = []
+
+        action.payload.callback(`/orders/${newOrder.id}/success`)
       })
       break
     }

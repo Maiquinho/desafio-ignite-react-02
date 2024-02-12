@@ -8,7 +8,15 @@ import {
   SuccessHeading,
 } from './styles'
 
+import { useCart } from '../../hooks/useCart'
+import { useLocation } from 'react-router-dom'
+
 export function Success() {
+  const { orders } = useCart()
+
+  const orderId = parseInt(useLocation().pathname.split('/')[2])
+  const order = orders.find((item) => item.id === orderId)
+
   return (
     <main>
       <Container>
@@ -25,9 +33,10 @@ export function Success() {
                   <MapPin size={16} weight="fill" />
                 </IconBox>
                 <span>
-                  Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                  Entrega em{' '}
+                  <strong>{`${order?.street}, ${order?.number}`}</strong>
                   <br />
-                  Farrapos - Porto Alegre, RS
+                  {`${order?.district} - ${order?.city}, ${order?.state}`}
                 </span>
               </OrderInfoItem>
               <OrderInfoItem>
@@ -46,7 +55,7 @@ export function Success() {
                 <span>
                   Pagamento na entrega
                   <br />
-                  <strong>Cartão de Crédito</strong>
+                  <strong>{order?.paymentMethod}</strong>
                 </span>
               </OrderInfoItem>
             </section>

@@ -3,7 +3,7 @@ import { useCart } from './useCart'
 import { coffees } from '../../data.json'
 
 export function useCheckout() {
-  const { cart } = useCart()
+  const { cart, checkout } = useCart()
 
   const itemsOnCart = cart.map((cartItem) => {
     const coffeeData = coffees.find((coffee) => coffee.id === cartItem.id)
@@ -24,5 +24,6 @@ export function useCheckout() {
     itemsOnCart,
     deliveryTax,
     totalPrice,
+    checkout,
   }
 }

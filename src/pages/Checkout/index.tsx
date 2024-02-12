@@ -69,24 +69,24 @@ const formSchema = z.object({
   }),
 })
 
-type FormType = z.infer<typeof formSchema>
+export type OrderForm = z.infer<typeof formSchema>
 
 export function Checkout() {
   const theme = useTheme()
 
-  const { itemsOnCart, totalPrice, deliveryTax } = useCheckout()
+  const { itemsOnCart, totalPrice, deliveryTax, checkout } = useCheckout()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormType>({
+  } = useForm<OrderForm>({
     mode: 'all',
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(form: FormType) {
-    console.log(form)
+  function onSubmit(form: OrderForm) {
+    checkout(form)
   }
 
   return (
